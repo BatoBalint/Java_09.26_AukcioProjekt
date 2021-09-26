@@ -52,12 +52,19 @@ public class Festmeny {
             licitekSzama++;
             utolsoLicitIdeje = LocalDateTime.now();
         } else {
-            legmagasabbLicit = (int)(legmagasabbLicit * 1.1 - (legmagasabbLicit * 1.1 % Math.pow(10, Math.floor(Math.log10(legmagasabbLicit * 1.1)) - 1)));
-            utolsoLicitIdeje = LocalDateTime.now();
+            licit(10);
         }
     }
 
     public void licit(int mertek) {
-
+        double ideiglenesTarolo;
+        if (elkelt) System.out.println("Sajnalom, a festmeny mar elkelt");
+        else if (mertek > 9 && mertek < 101) System.out.println("10 es 100 kozott adjon meg erteket");
+        else {
+            ideiglenesTarolo = (legmagasabbLicit * mertek) / 100;
+            legmagasabbLicit = (int)(ideiglenesTarolo - (ideiglenesTarolo % Math.pow(10, Math.floor(Math.log10(ideiglenesTarolo)) - 1)));
+            licitekSzama++;
+            utolsoLicitIdeje = LocalDateTime.now();
+        }
     }
 }
