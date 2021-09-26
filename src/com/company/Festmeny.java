@@ -90,4 +90,8 @@ public class Festmeny {
             return String.format("%s: %s\n%s%s$ - %s (osszesen: %s)", festo, cim, elkelte, legmagasabbLicit, formattedDate, licitekSzama);
         }
     }
+
+    public String toSimpleLine() {
+        return String.format("%s;%s;%s\n", festo, cim, stilus);
+    }
 }

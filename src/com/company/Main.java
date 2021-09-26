@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -20,13 +21,16 @@ public class Main {
         Festmenyek.add(f2);
         f2.licit();
         Beolvasas();
-        //Kiiratas();
-        RandomLicit();
+        RandomLicit(200);
         //FelhasznaloLicit();
+        LegdragabbFestmeny();
+        TiznelTobbLicit();
+        NemEladottFestmenyekSzama();
         Kiiratas();
         FestmenyekListaRendezese();
         System.out.println("\n\n");
         Kiiratas();
+        FajlokMentese();
     }
 
     static void FestmenyHozzaadas() {
@@ -76,9 +80,9 @@ public class Main {
         }
     }
 
-    static void RandomLicit() {
+    static void RandomLicit(int numberOfLicits) {
         Random rnd = new Random();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < numberOfLicits; i++) {
             Festmenyek2.get(rnd.nextInt(Festmenyek2.size())).licit();
         }
     }
@@ -156,8 +160,8 @@ public class Main {
                 else if(a.getLegmagasabbLicit() < legdreagabb.getLegmagasabbLicit()) legdreagabb = a;
             }
         }
-        if (legdreagabb == null) System.out.println("Nincs eladott festmeny");
-        else System.out.printf("A legdragabb elkelt festmeny: \n\n%s", legdreagabb);
+        if (legdreagabb == null) System.out.println("Nincs eladott festmeny\n");
+        else System.out.printf("A legdragabb elkelt festmeny: \n\n%s\n", legdreagabb);
     }
     
     static void TiznelTobbLicit() {
@@ -166,8 +170,8 @@ public class Main {
         while (nincs && i < Festmenyek2.size()) {
             if (Festmenyek2.get(i).getLicitekSzama() > 10) nincs = false;
         }
-        if (!nincs) System.out.println("Van olyan festmeny amire 10nel tobben licitaltak");
-        else System.out.println("Nincs olyan festmeny amire 10nel tobben licitaltak");
+        if (!nincs) System.out.println("Van olyan festmeny amire 10nel tobben licitaltak\n");
+        else System.out.println("Nincs olyan festmeny amire 10nel tobben licitaltak\n");
     }
 
     static void NemEladottFestmenyekSzama() {
@@ -175,7 +179,7 @@ public class Main {
         for (Festmeny a: Festmenyek2) {
             if (!a.getElkelt()) db++;
         }
-        System.out.printf("%d db festmeny van ami nem kelt el.");
+        System.out.printf("%d db festmeny van ami nem kelt el.\n\n", db);
     }
 
     static void FestmenyekListaRendezese() {
@@ -187,5 +191,20 @@ public class Main {
                 return 0;
             }
         });
+    }
+
+    static void FajlokMentese() {
+        try {
+            FileWriter wr = new FileWriter("festmenyek_rendezett.csv");
+            for (Festmeny a : Festmenyek2) {
+                wr.write(a.toSimpleLine());
+            }
+            wr.close();
+            System.out.println("\n\nFajlok sikeresen elmentve");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.printf("Hiba tortent ezert nem sikerult elmenteni a fjlokat");
+        }
+        
     }
 }
