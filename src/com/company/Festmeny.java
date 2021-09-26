@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 public class Festmeny {
+    //<editor-fold desc="variables">
     private String cim;
     private String festo;
     private String stilus;
@@ -12,7 +13,9 @@ public class Festmeny {
     private int legmagasabbLicit = 0;
     private LocalDateTime utolsoLicitIdeje;
     private boolean elkelt = false;
+    //</editor-fold>
 
+    //<editor-fold desc="getters">
     public String getStilus() {
         return stilus;
     }
@@ -40,6 +43,7 @@ public class Festmeny {
     public void setElkelt(boolean elkelt) {
         this.elkelt = elkelt;
     }
+    //</editor-fold>
 
     public Festmeny(String cim, String festo, String stilus) {
         this.cim = cim;
@@ -47,11 +51,12 @@ public class Festmeny {
         this.stilus = stilus;
     }
 
+    public void elad() {
+        elkelt = true;
+    }
+
     public void licit() {
-        if (elkelt) System.out.println("Sajnalom, a festmeny mar elkelt");
-        else {
-            licit(10);
-        }
+        licit(10);
     }
 
     public void licit(int mertek) {
@@ -65,7 +70,6 @@ public class Festmeny {
             System.out.println("10 es 100 kozott adjon meg erteket");
         } else {
             ideiglenesTarolo = ((double)legmagasabbLicit * (100 + (double)mertek)) / 100;
-            System.out.println(ideiglenesTarolo);
             legmagasabbLicit = (int)(ideiglenesTarolo - (ideiglenesTarolo % (Math.pow(10, Math.floor(Math.log10(ideiglenesTarolo)) - 1))));
             licitekSzama++;
             utolsoLicitIdeje = LocalDateTime.now();
@@ -74,11 +78,16 @@ public class Festmeny {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = utolsoLicitIdeje.format(formatter);
         String elkelte;
-        if (elkelt) elkelte = "Elkelt";
-        else elkelte = "Nem kelt el";
-        return String.format("%s: %s\n%s\n%s - %s (osszesen: %s)", festo, cim, elkelte, legmagasabbLicit, formattedDate, licitekSzama);
+        if (elkelt) elkelte = "Elkelt\n";
+        else elkelte = "";
+        if (licitekSzama < 1) {
+            return String.format("%s: %s\n%s", festo, cim, elkelte);
+        }
+        else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = utolsoLicitIdeje.format(formatter);
+            return String.format("%s: %s\n%s%s$ - %s (osszesen: %s)", festo, cim, elkelte, legmagasabbLicit, formattedDate, licitekSzama);
+        }
     }
 }
