@@ -22,8 +22,11 @@ public class Main {
         Beolvasas();
         //Kiiratas();
         RandomLicit();
-        //Kiiratas();
-        FelhasznaloLicit();
+        //FelhasznaloLicit();
+        Kiiratas();
+        FestmenyekListaRendezese();
+        System.out.println("\n\n");
+        Kiiratas();
     }
 
     static void FestmenyHozzaadas() {
@@ -143,5 +146,46 @@ public class Main {
         int elteltMasodpperc = (int)ChronoUnit.SECONDS.between(Festmenyek2.get(index).getUtolsoLicitIdeje(), LocalDateTime.now());
         boolean elteltKetPerc = elteltMasodpperc > 120;
         return elteltKetPerc;
+    }
+
+    static void LegdragabbFestmeny() {
+        Festmeny legdreagabb = null;
+        for (Festmeny a: Festmenyek2) {
+            if (a.getElkelt()) {
+                if (legdreagabb == null) legdreagabb = a;
+                else if(a.getLegmagasabbLicit() < legdreagabb.getLegmagasabbLicit()) legdreagabb = a;
+            }
+        }
+        if (legdreagabb == null) System.out.println("Nincs eladott festmeny");
+        else System.out.printf("A legdragabb elkelt festmeny: \n\n%s", legdreagabb);
+    }
+    
+    static void TiznelTobbLicit() {
+        boolean nincs = true;
+        int i = 0;
+        while (nincs && i < Festmenyek2.size()) {
+            if (Festmenyek2.get(i).getLicitekSzama() > 10) nincs = false;
+        }
+        if (!nincs) System.out.println("Van olyan festmeny amire 10nel tobben licitaltak");
+        else System.out.println("Nincs olyan festmeny amire 10nel tobben licitaltak");
+    }
+
+    static void NemEladottFestmenyekSzama() {
+        int db = 0;
+        for (Festmeny a: Festmenyek2) {
+            if (!a.getElkelt()) db++;
+        }
+        System.out.printf("%d db festmeny van ami nem kelt el.");
+    }
+
+    static void FestmenyekListaRendezese() {
+        Collections.sort(Festmenyek2, new Comparator<Festmeny>() {
+            @Override
+            public int compare(Festmeny o1, Festmeny o2) {
+                if (o1.getLegmagasabbLicit() > o2.getLegmagasabbLicit()) return -1;
+                if (o1.getLegmagasabbLicit() < o2.getLegmagasabbLicit()) return 1;
+                return 0;
+            }
+        });
     }
 }
