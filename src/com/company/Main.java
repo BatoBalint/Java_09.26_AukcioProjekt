@@ -82,12 +82,13 @@ public class Main {
 
     static void FelhasznaloLicit() {
         Scanner sc = new Scanner(System.in);
+        String userAnsw;
         try {
             List<Integer> licitaltFestmenyek = new ArrayList<>();
             boolean again = true;
             while(again) {
                 System.out.printf("\nMelyik festmenyre szeretne licitalni (0-kilepes, kepek: %s): ", Festmenyek2.size());
-                String userAnsw = sc.nextLine();
+                userAnsw = sc.nextLine();
                 int index = Integer.parseInt(userAnsw) - 1;
                 if (index == -1) {
                     again = false;
@@ -130,10 +131,11 @@ public class Main {
             Set<Integer> egyediLicitaltFestmenyek = new HashSet<>(licitaltFestmenyek);
             for (int a: egyediLicitaltFestmenyek) {
                 Festmenyek2.get(a).elad();
-                System.out.printf("Festmeny sikeresen eladva:\n%s\n", Festmenyek2.get(a));
+                System.out.printf("\nFestmeny sikeresen eladva:\n%s\n", Festmenyek2.get(a));
             }
         } catch (Exception e) {
             System.out.println("Ez nem egy szam *facepalm*");
+            System.out.println(e.getMessage());
         }
     }
 
