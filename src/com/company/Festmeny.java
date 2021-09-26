@@ -52,7 +52,7 @@ public class Festmeny {
             licitekSzama++;
             utolsoLicitIdeje = LocalDateTime.now();
         } else {
-            legmagasabbLicit *= 1.1;
+            legmagasabbLicit = (int)(legmagasabbLicit * 1.1 - (legmagasabbLicit * 1.1 % Math.pow(10, Math.floor(Math.log10(legmagasabbLicit * 1.1)) - 1)));
             utolsoLicitIdeje = LocalDateTime.now();
         }
     }
